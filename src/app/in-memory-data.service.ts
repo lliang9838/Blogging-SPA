@@ -15,12 +15,12 @@ export class Post {
 
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const users = [
+    const leslie = [
       { postid: 1, created: '111', modified: '222', title: "hey", body: "ok" },
       { postid: 2, created: '121', modified: '223', title: "hi", body: "cool" },
       { postid: 3, created: '131', modified: '224', title: "dog", body: "cat" }
     ];
-    return {users};
+    return {leslie};
   }
 
   

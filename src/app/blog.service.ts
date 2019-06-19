@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +8,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class BlogService {
 
   private posts: Post[];
+  private url = 'http://localhost:3000/api/';
 
   constructor(private http: HttpClient) { }
 
-  getHeroes(): number{
-    return 1
+  fetchPosts(username: string): void
+  {
+    let new_url = this.url + username;
+    console.log(this.http.get(new_url))
   }
 }
 
