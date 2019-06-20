@@ -21,7 +21,7 @@ export class BlogService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(url): Observable<Post[]>
+  httprequest(url): Observable<Post[]>
   {
     return this.http.get<Post[]>(url)
   }
@@ -29,7 +29,11 @@ export class BlogService {
   fetchPosts(username: string): void //returns an observable of Posts
   {
     let new_url = this.url + username;
-    this.getPosts(new_url).subscribe(posts => this.posts = posts)
+    this.httprequest(new_url).subscribe(posts => this.posts = posts)
+  }
+
+  getPosts(username: string): Post[]{
+    return this.posts;
   }
   
 }
