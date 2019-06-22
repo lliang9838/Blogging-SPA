@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Post, BlogService} from '../blog.service';
+import {Post} from '../blog.service';
+import {BlogService} from '../blog.service'
 
 @Component({
   selector: 'app-list',
@@ -16,11 +17,15 @@ export class ListComponent implements OnInit {
   ngOnInit() {
 
     //TODO: I'll worry about the sorting and ordering later
-    let username = parseJWT(document.cookie);
+    console.log(document.cookie)
+    let username = parseJWT(document.cookie)["usr"]; //got username here
+    console.log(username)
     this.blogService.fetchPosts(username);
-    this.posts = this.blogService.getPosts(username);
-  }
 
+    let my_posts = this.blogService.getPosts(username);
+    console.log(my_posts)
+    this.posts = my_posts;
+  }
   
 }
 

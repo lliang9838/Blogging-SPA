@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { stringify } from 'querystring';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
 
 export class Post {
   postid: number;
@@ -14,6 +10,8 @@ export class Post {
   title: string;
   body: string;
 }
+
+@Injectable({providedIn: 'root'})
 export class BlogService {
 
   private posts: Post[];
@@ -29,10 +27,15 @@ export class BlogService {
   fetchPosts(username: string): void //returns an observable of Posts
   {
     let new_url = this.url + username;
-    this.httprequest(new_url).subscribe(posts => this.posts = posts)
+    this.httprequest(new_url).subscribe(
+      posts => {
+        console.log(posts[0]) //TOOD: looks like we need to look through all of posts and assign it to this.posts
+        this.posts = posts // **BUG**, why's it undefined here
+        console.log(this.posts)})
   }
 
   getPosts(username: string): Post[]{
+    console.log("posts in getPosts is " + this.posts);
     return this.posts;
   }
   
