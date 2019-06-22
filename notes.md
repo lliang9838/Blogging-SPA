@@ -16,3 +16,7 @@ export class InMemoryDataService implements InMemoryDbService {
   ```
 * now in the service that does HTTP request, the url has two parts: prev_url + resource. 
 Previous url can be anything, resource can be leslie or rumman and the approproate array will be returned
+
+## TIP: Think simple. Understand the problem, search online, read carefully
+* cannot read undefined property of error simply means the variable's property was not defined, 
+and we need to initialize the variable to something

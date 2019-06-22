@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
     //TODO: I'll worry about the sorting and ordering later
     console.log(document.cookie)
     let username = parseJWT(document.cookie)["usr"]; //got username here
-    console.log(username)
+    //console.log(username)
     this.blogService.fetchPosts(username);
 
     let my_posts = this.blogService.getPosts(username);

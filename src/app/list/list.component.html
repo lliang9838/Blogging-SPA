@@ -1,6 +1,7 @@
 <h2>Posts</h2>
 <ul class="posts">
   <li *ngFor="let post of posts">
-      {{post.created}}
+      <span> {{post.title}} </span> <br>
+      {{post.body}}
   </li>
 </ul>
