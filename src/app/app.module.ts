@@ -6,11 +6,15 @@ import {BlogService} from './blog.service';
 import { AppComponent } from './app.component';
 
 import { ListComponent } from './list/list.component';
+import { EditComponent } from './edit/edit.component';
+import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
 @NgModule({
   declarations: [
     AppComponent,
     ListComponent,
+    EditComponent,
+    FormsModule
 
   ],
   imports: [
