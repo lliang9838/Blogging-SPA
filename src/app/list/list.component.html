@@ -1,13 +1,14 @@
 <h2>Posts</h2>
-<div class="list"> 
-<ul class="posts" >
-  <li *ngFor="let post of posts"
-      (click)="onSelect(post)">
-      <span> {{post.title}} </span>{{post.body}}
-  </li>
-</ul>
+<div id="container">
+<div id="div1"> 
+  <ul>
+    <li *ngFor="let post of posts"
+        (click)="onSelect(post)">
+        <span> {{post.title}} </span>{{post.body}}
+    </li>
+  </ul>
 </div>
-<div class="edit">
+<div id="div2">
   <app-edit [post]="selectedPost"></app-edit> 
 </div>
-<div class="clearfix"></div>
+</div>

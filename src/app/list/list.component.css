@@ -1,15 +1,14 @@
-.list{
-    width:55%;
-    margin-right:2%;
-    float: left;
+#container {
+position: relative;
+width: 800px;
 }
-.list ul{
-    width:100%;
+#div1, #div2 {
+position: absolute;
+width: 400px;
 }
-.edit{
-    width:42%;
-    float: left;
+#div1 {
+left: 0;
 }
-.clearfix{
-    clear:both
+#div2 {
+left: 300px;
 }

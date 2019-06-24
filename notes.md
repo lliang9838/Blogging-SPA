@@ -20,3 +20,6 @@ Previous url can be anything, resource can be leslie or rumman and the approproa
 ## TIP: Think simple. Understand the problem, search online, read carefully
 * cannot read undefined property of error simply means the variable's property was not defined, 
 and we need to initialize the variable to something
+
+## StackOverflow
+* positioning elements side by side: https://stackoverflow.com/questions/7448363/is-it-possible-to-put-two-div-elements-side-by-side-without-using-css-float
