@@ -1,0 +1,15 @@
+.list{
+    width:55%;
+    margin-right:2%;
+    float: left;
+}
+.list ul{
+    width:100%;
+}
+.edit{
+    width:42%;
+    float: left;
+}
+.clearfix{
+    clear:both
+}
