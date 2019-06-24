@@ -23,3 +23,4 @@ and we need to initialize the variable to something
 
 ## StackOverflow
 * positioning elements side by side: https://stackoverflow.com/questions/7448363/is-it-possible-to-put-two-div-elements-side-by-side-without-using-css-float
+* sorted array of objects: https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/

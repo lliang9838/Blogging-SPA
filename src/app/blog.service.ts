@@ -45,11 +45,13 @@ export class BlogService {
           
           this.posts.push(p)
         }
+        this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
         console.log(this.posts)})
   }
 
   getPosts(username: string): Post[]{
     console.log("posts in getPosts is " + this.posts);
+    //needs to make sure posts are sorted by postid
     return this.posts;
   }
   
