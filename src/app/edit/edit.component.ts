@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import {Post} from '../blog.service';
 import {BlogService} from '../blog.service'
@@ -10,7 +10,8 @@ import {BlogService} from '../blog.service'
 })
 export class EditComponent implements OnInit {
 
-  post: Post;
+  //master detail thing similar to TOH
+  @Input() post: Post;
 
   constructor(private blogService: BlogService) { }
 

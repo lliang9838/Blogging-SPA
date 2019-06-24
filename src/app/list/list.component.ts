@@ -11,6 +11,8 @@ export class ListComponent implements OnInit {
 
   posts: Post[];
 
+  selectedPost: Post;
+
   //dependency injection
   constructor(private blogService: BlogService) { }
 
@@ -25,6 +27,10 @@ export class ListComponent implements OnInit {
     let my_posts = this.blogService.getPosts(username);
     console.log(my_posts)
     this.posts = my_posts;
+  }
+
+  onSelect(post: Post): void{
+    this.selectedPost = post;
   }
   
 }

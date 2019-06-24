@@ -14,14 +14,13 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
     AppComponent,
     ListComponent,
     EditComponent,
-    FormsModule
 
   ],
   imports: [
     BrowserModule,
     // import HttpClientModule after BrowserModule.
-    HttpClientModule
-   
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
