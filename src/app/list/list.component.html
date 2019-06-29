@@ -4,11 +4,11 @@
   <ul>
     <li *ngFor="let post of posts"
         (click)="onSelect(post)">
-        <span> {{post.title}} </span>{{post.body}}
+        <span> {{post.postid}} &nbsp; {{ post.created | date:'medium' }}    </span> <span> {{post.title}} </span>
     </li>
   </ul>
 </div>
 <div id="div2">
-  <app-edit [post]="selectedPost"></app-edit> 
+  <app-edit [post]="selectedPost" [username]="selectedUsername"></app-edit> 
 </div>
 </div>

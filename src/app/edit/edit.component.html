@@ -3,7 +3,10 @@
     <div>Title: <input type="text" name="title" [(ngModel)]="post.title"></div>
     <div> Body: <textarea rows="4" cols="50" [(ngModel)]="post.body" name="body">
     </textarea> </div>
-    <input type="submit" value="Submit">
+    <p> Last Modified: {{ post.modified | date:'medium' }}  </p>
+    <input type="button" value="save" (click)="save(username, post)">
+    <input type="button" value="delete" (click)="delete(username, post.postid)">
+    <input type="button" value="preview" (click)="preview(post)">
   </form>
 </div>
   

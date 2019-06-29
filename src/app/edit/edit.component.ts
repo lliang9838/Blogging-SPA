@@ -12,10 +12,25 @@ export class EditComponent implements OnInit {
 
   //master detail thing similar to TOH
   @Input() post: Post;
+  @Input() username: string;
 
   constructor(private blogService: BlogService) { }
 
   ngOnInit() {
   }
 
+  save(username: string, post: Post)
+  {
+    this.blogService.updatePost(username, post);
+  }
+
+  delete(username: string, postid: number)
+  {
+    this.blogService.deletePost(username, postid);
+  }
+
+  preview(post: Post)
+  {
+    console.log("preview")
+  }
 }
