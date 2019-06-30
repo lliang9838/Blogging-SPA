@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Post} from '../blog.service';
 import {BlogService} from '../blog.service'
+import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-list',
@@ -19,7 +21,10 @@ export class ListComponent implements OnInit {
  
 
   //dependency injection
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService,
+              private router: Router,
+              private activatedRouter: RouterModule,
+    ) { }
 
   ngOnInit() {
 
@@ -37,7 +42,13 @@ export class ListComponent implements OnInit {
   }
 
   onSelect(post: Post): void{
-    this.selectedPost = post;
+    let route_url = "edit/" + post.postid;
+    this.router.navigate([route_url]);
+  }
+
+  new(post: Post)
+  {
+
   }
   
 }

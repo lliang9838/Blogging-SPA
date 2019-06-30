@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import {ActivatedRoute} from '@angular/router';
 import {Post} from '../blog.service';
 import {BlogService} from '../blog.service'
 
@@ -14,9 +15,26 @@ export class EditComponent implements OnInit {
   @Input() post: Post;
   @Input() username: string;
 
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService,
+              private activatedRoute: ActivatedRoute
+    ) 
+    { 
+    }
 
   ngOnInit() {
+    //listening to route changes here, yay. confirmed it works
+      //subscribing now makes edit component responsible for changing post when url changes
+      this.activatedRoute.paramMap.subscribe( 
+      () => 
+        {
+          let id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
+          this.post = this.getPost(id);
+        } );
+  }
+
+  getPost(postid: number): Post
+  {
+    return this.blogService.getPost(postid);
   }
 
   save(username: string, post: Post)

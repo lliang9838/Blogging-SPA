@@ -64,11 +64,28 @@ export class BlogService {
       })
   }
 
+  //no need to worry about this.posts not being populated, when application is loaded, should already be populated
+  getPost(postid: number): Post
+  {
+    for(let i  = 0 ; i < this.posts.length; i++)
+    {
+      if(postid === this.posts[i].postid) 
+      {
+        return this.posts[i];
+      }
+    }
+    
+  }
+
   getPosts(username: string): Post[]{
     //console.log("posts in getPosts is " + this.posts);
     //needs to make sure posts are sorted by postid
     return this.posts;
   }
+
+  // newPost(username: string): Post {
+  //   return 
+  // }
 
   //This is how you do http requests with observables, you call the http request, then you subscribe to it
   //this is what makes it asychronous
