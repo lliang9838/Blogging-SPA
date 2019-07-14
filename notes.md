@@ -27,3 +27,6 @@ and we need to initialize the variable to something
 
 ## Reading full response using httpclient
 * https://stackoverflow.com/questions/50920833/how-can-we-get-httpclient-status-code-in-angular-4
+
+---
+* For authentication and authorization problems, always remember to terminate all chrome instances by for quiting chrome and then start chrome again with `open -a Google\ Chrome --args --disable-web-security --user-data-dir`, and wait until you see the message **open -a Google\ Chrome --args --disable-web-security --user-data-dir** to know that you are in the clear. 

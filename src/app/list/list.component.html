@@ -5,6 +5,7 @@
   <ul>
     <li *ngFor="let post of posts"
         (click)="onSelect(post)">
+        <!-- TODO: postid needs to be hidden later on. Displayed for debugging purposes rn -->
         <span> {{post.postid}} &nbsp; {{ post.created | date:'medium' }}    </span> <span> {{post.title}} </span>
     </li>
   </ul>

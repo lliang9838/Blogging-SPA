@@ -4,6 +4,7 @@ import {BlogService} from '../blog.service'
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -27,15 +28,14 @@ export class ListComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-
-    //TODO: I'll worry about the sorting and ordering later
+    console.log("in ngoninit of list component")
     console.log(document.cookie)
     let username = parseJWT(document.cookie)["usr"]; //got username here
     this.selectedUsername = username;
     //console.log(username)
     this.blogService.fetchPosts(username);
 
-    let my_posts = this.blogService.getPosts(username);
+    let my_posts = this.blogService.getPosts();
     //console.log(my_posts)
     this.posts = my_posts;
 
@@ -48,7 +48,7 @@ export class ListComponent implements OnInit {
 
   new(post: Post)
   {
-
+    console.log("cool")
   }
   
 }

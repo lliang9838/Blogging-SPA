@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 
 
 export class Post {
@@ -18,7 +19,7 @@ export class BlogService {
   private posts: Post[] = [];
   private url = 'http://localhost:3000/api/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private router: Router) { }
 
   
   // private handleError(operation = 'operation') {
@@ -77,7 +78,7 @@ export class BlogService {
     
   }
 
-  getPosts(username: string): Post[]{
+  getPosts(): Post[]{
     //console.log("posts in getPosts is " + this.posts);
     //needs to make sure posts are sorted by postid
     return this.posts;
@@ -87,13 +88,17 @@ export class BlogService {
   //   return 
   // }
 
+  /* METHOD DOESN'T WORK */
   //This is how you do http requests with observables, you call the http request, then you subscribe to it
   //this is what makes it asychronous
-  updatePost(username: string, post: Post): void{
-    //console.log("username is " +  username)
+  updatePost(post: Post): void{
+    
+    console.log(document.cookie)
+    let username = parseJWT(document.cookie)["usr"]; //got username here
+
     //console.log(post)
     let new_url = this.url + username + '/'+ post.postid;
-    //console.log(new_url)
+    console.log(new_url)
     let body = {"title": post.title, "body":post.body, "modified": Date.now()}
     //adding response: text is crucial, without it, code wouldn't work
     const req =  this.http.put(new_url, body, {responseType: 'text'});
@@ -102,16 +107,23 @@ export class BlogService {
 
         if(ret !== "OK")
         {
-          console.log("Error updating the post at the server.")
-          //TODO: convert this to an alert message
-          //TODO: need to navigate to "edit view" of the post
+          alert("Error updating the post at the server.")
+          let route_url = "edit/" + post.postid;
+
+          //TODO: (DONE) need to navigate to "edit view" of the post
         }
       });
+    //navigate back to this view when we're finished updating
+    let route_url = "edit/" + post.postid;
+    this.router.navigate([route_url]);
   }
 
   //TODO: need to show that the post in the list pane is deleted without refreshing page
-  deletePost(username: string, postid: number): void 
+  deletePost(postid: number): void 
   {
+    console.log(document.cookie)
+    let username = parseJWT(document.cookie)["usr"]; //got username here
+
     console.log("postid is " + postid);
     for(let i  = 0 ; i < this.posts.length; i++)
     {
@@ -128,14 +140,22 @@ export class BlogService {
 
             if(ret.status !== 204)
             {
-              console.log("Error deleting the post at the server.")
+              alert("Error deleting the post at the server.")
               //TODO: convert this to an alert message
-              //TODO: need to navigate to /, the “list pane” of the editor
+              //TODO: (DONE) need to navigate to /, the “list pane” of the editor
             }
           })
         this.posts.slice(i,1); //deletes 1 element at index i
       }
     }
+    this.router.navigate(['/'])
   }
 
+}
+
+function parseJWT(token)
+{
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(base64));
 }
