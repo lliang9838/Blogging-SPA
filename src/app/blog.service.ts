@@ -19,6 +19,8 @@ export class BlogService {
   private posts: Post[] = [];
   private url = 'http://localhost:3000/api/';
 
+  private storage: string = "posts";
+
   constructor(private http: HttpClient,private router: Router) { }
 
   
@@ -37,11 +39,18 @@ export class BlogService {
     return this.http.get<Post[]>(url)
   }
 
+  //we're always guaranteeed that fetchPosts is called first whenever applicaiton is loaded. so we can then store data in browser and guarantee subsequent calls would already have data in browser
   fetchPosts(username: string): void //returns an observable of Posts
-  {
+  { 
+    console.log("this.posts outside of the get request is " + this.posts);
+
     let new_url = this.url + username;
+    //GOTCHA: when the get request is called, the array goes from being empty to being undefined
     this.getrequest(new_url).subscribe(
       posts => {
+
+        //whenever fetchPosts is called, we should initialize the array back to empty, if not it would just keep on adding redundant data into our array
+        this.posts = []; 
         //console.log("posts[0].postid is " + posts[0].postid) //TOOD: looks like we need to look through all of posts and assign it to this.posts
         for(let i = 0; i < posts.length; i++)
         {
@@ -53,14 +62,15 @@ export class BlogService {
               title: posts[i].title,
               body: posts[i].body };
 
-         // console.log("p is " + p)
-         // console.log("p.postid is " + p.postid)
+          console.log("posts is " + posts);
           
+          console.log("this.posts is " + this.posts);
           this.posts.push(p)
         }
 
         //FINSIHED: posts are listed in ascending order according to postid
         this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
+        localStorage.setItem(this.storage, JSON.stringify(this.posts)); //storing posts in localstorage
         //console.log(this.posts)
       })
   }
@@ -68,6 +78,15 @@ export class BlogService {
   //no need to worry about this.posts not being populated, when application is loaded, should already be populated
   getPost(postid: number): Post
   {
+    console.log("in getPost in blog service")
+
+    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    {
+      this.posts = JSON.parse(localStorage.getItem(this.storage));
+    }
+
+    console.log("this.posts is " + this.posts);
+
     for(let i  = 0 ; i < this.posts.length; i++)
     {
       if(postid === this.posts[i].postid) 
@@ -79,8 +98,12 @@ export class BlogService {
   }
 
   getPosts(): Post[]{
-    //console.log("posts in getPosts is " + this.posts);
-    //needs to make sure posts are sorted by postid
+
+    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    {
+      this.posts = JSON.parse(localStorage.getItem(this.storage));
+    }
+
     return this.posts;
   }
 
@@ -92,6 +115,11 @@ export class BlogService {
   //This is how you do http requests with observables, you call the http request, then you subscribe to it
   //this is what makes it asychronous
   updatePost(post: Post): void{
+
+    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    {
+      this.posts = JSON.parse(localStorage.getItem(this.storage));
+    }
     
     console.log(document.cookie)
     let username = parseJWT(document.cookie)["usr"]; //got username here
@@ -121,6 +149,11 @@ export class BlogService {
   //TODO: need to show that the post in the list pane is deleted without refreshing page
   deletePost(postid: number): void 
   {
+    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    {
+      this.posts = JSON.parse(localStorage.getItem(this.storage));
+    }
+
     console.log(document.cookie)
     let username = parseJWT(document.cookie)["usr"]; //got username here
 

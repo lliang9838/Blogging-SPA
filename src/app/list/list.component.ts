@@ -36,9 +36,8 @@ export class ListComponent implements OnInit {
     this.blogService.fetchPosts(username);
 
     let my_posts = this.blogService.getPosts();
-    //console.log(my_posts)
     this.posts = my_posts;
-
+    console.log("In list component, property posts is " + this.posts)
   }
 
   onSelect(post: Post): void{

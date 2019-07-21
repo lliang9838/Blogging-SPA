@@ -30,3 +30,9 @@ and we need to initialize the variable to something
 
 ---
 * For authentication and authorization problems, always remember to terminate all chrome instances by for quiting chrome and then start chrome again with `open -a Google\ Chrome --args --disable-web-security --user-data-dir`, and wait until you see the message **open -a Google\ Chrome --args --disable-web-security --user-data-dir** to know that you are in the clear. 
+---
+* on refresh data gets lost. Need to store data in localstorage or constantly retrieve it from database
+in order for data to show on the browser. The reason why retrieving from database didn't work for edit
+component is because we accessed a temp variable (which gets lost), we didn't actually make a call to 
+the database, so for the edit component no data actually gets displayed on refresh. For the list component, we actually made a call to the database, so we eventually got the data, even though it may seem we didn't get the data at first (bc of asychronicity). 
+* on refresh not only does data gets lost, it becomes **null**

@@ -3,12 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { EditComponent } from './edit/edit.component';
 
 const routes: Routes = [
-  { path: 'edit/:id', component: EditComponent, runGuardsAndResolvers: 'always' }
+  { path: 'edit/:id', component: EditComponent }
   
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{onSameUrlNavigation: 'reload'})],
+  //useHash is the reason why we can have a little hash tag symbol
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [ RouterModule ]
 })
 export class AppRoutingModule { }

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { HostListener } from '@angular/core';
 import {Post} from '../blog.service';
 import {BlogService} from '../blog.service'
-import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
+import { RouterModule, Routes, ActivatedRoute, Router, NavigationEnd} from '@angular/router';
 
 @Component({
   selector: 'app-edit',
@@ -15,6 +15,7 @@ export class EditComponent implements OnInit {
   @Input() post: Post;
   @Input() username: string;
 
+
   constructor(private blogService: BlogService,
               private activatedRoute: ActivatedRoute,
               private router: Router
@@ -24,9 +25,11 @@ export class EditComponent implements OnInit {
 
   ngOnInit() {
     console.log("in ngoninit of edit component")
-    console.log("post 1 is " + this.post); 
+
+    console.log("this.post before paramMap is " + this.post); 
     //listening to route changes here, yay. confirmed it works
       //subscribing now makes edit component responsible for changing post when url changes
+    
     this.activatedRoute.paramMap.subscribe( 
     () => 
     {
@@ -37,8 +40,10 @@ export class EditComponent implements OnInit {
       console.log("posts are" + this.getPosts())
     } );
 
-    console.log("post 2 is " + this.post);  
+    console.log("this.post after paramMap is " + this.post);  
+
   }
+
 
   //whenever the browser is going to change states, any unsaved changes is saved automatically
   @HostListener('window:beforeunload') 
