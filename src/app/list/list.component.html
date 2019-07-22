@@ -7,7 +7,8 @@
             (click)="onSelect(post)">
             <div *ngIf="post">
             <!-- TODO: postid needs to be hidden later on. Displayed for debugging purposes rn -->
-            <span> {{post.postid}} &nbsp; {{ post.created | date:'medium' }}    </span> <span> {{post.title}} </span>
+            <span> {{post.postid}} &nbsp; {{ post.created | date:'medium' }} </span> 
+            <span> <input type="text"  [(ngModel)]="post.title" disabled="disabled"> </span>
             </div>
         </li>
       </ul>

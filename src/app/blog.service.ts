@@ -18,6 +18,7 @@ export class BlogService {
 
   private posts: Post[] = [];
   private url = 'http://localhost:3000/api/';
+  private username: string = "";
 
   private storage: string = "posts";
 
@@ -42,6 +43,7 @@ export class BlogService {
   //we're always guaranteeed that fetchPosts is called first whenever applicaiton is loaded. so we can then store data in browser and guarantee subsequent calls would already have data in browser
   fetchPosts(username: string): void //returns an observable of Posts
   { 
+    this.username = username;
     console.log("this.posts outside of the get request is " + this.posts);
 
     let new_url = this.url + username;
@@ -70,6 +72,7 @@ export class BlogService {
 
         //FINSIHED: posts are listed in ascending order according to postid
         this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
+        console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
         localStorage.setItem(this.storage, JSON.stringify(this.posts)); //storing posts in localstorage
         //console.log(this.posts)
       })
@@ -129,11 +132,14 @@ export class BlogService {
     console.log(new_url)
     let body = {"title": post.title, "body":post.body, "modified": Date.now()}
     //adding response: text is crucial, without it, code wouldn't work
-    const req =  this.http.put(new_url, body, {responseType: 'text'});
+    const req =  this.http.put(new_url, body, {observe: 'response'});
     req.subscribe( 
       ret => {
 
-        if(ret !== "OK")
+        //after it gets updated in the database, let's call fetchPost to update localStorage's copy
+        this.fetchPosts(this.username);
+
+        if(ret.status !== 200)
         {
           alert("Error updating the post at the server.")
           let route_url = "edit/" + post.postid;
@@ -169,7 +175,9 @@ export class BlogService {
         const req = this.http.delete(new_url, {observe: 'response'});
         req.subscribe(
           ret => {
+
             console.log("ret in deletePost is " + ret);
+            
 
             if(ret.status !== 204)
             {
@@ -177,8 +185,10 @@ export class BlogService {
               //TODO: convert this to an alert message
               //TODO: (DONE) need to navigate to /, the “list pane” of the editor
             }
+            this.posts.slice(i,1); //deletes 1 element at index i
+            this.fetchPosts(this.username);
           })
-        this.posts.slice(i,1); //deletes 1 element at index i
+       
       }
     }
     this.router.navigate(['/'])

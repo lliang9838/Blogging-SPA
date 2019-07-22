@@ -36,3 +36,5 @@ in order for data to show on the browser. The reason why retrieving from databas
 component is because we accessed a temp variable (which gets lost), we didn't actually make a call to 
 the database, so for the edit component no data actually gets displayed on refresh. For the list component, we actually made a call to the database, so we eventually got the data, even though it may seem we didn't get the data at first (bc of asychronicity). 
 * on refresh not only does data gets lost, it becomes **null**
+---
+* we can use two levels of **two-way** binding to bink data across **TWO** components

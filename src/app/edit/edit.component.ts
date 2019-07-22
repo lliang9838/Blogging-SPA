@@ -24,12 +24,15 @@ export class EditComponent implements OnInit {
     }
 
   ngOnInit() {
-    console.log("in ngoninit of edit component")
+    //console.log("in ngoninit of edit component")
 
-    console.log("this.post before paramMap is " + this.post); 
+   // console.log("this.post before paramMap is " + this.post); 
     //listening to route changes here, yay. confirmed it works
       //subscribing now makes edit component responsible for changing post when url changes
     
+    //gotta call this.fetchPosts here to update the list component as well
+
+
     this.activatedRoute.paramMap.subscribe( 
     () => 
     {
@@ -37,7 +40,6 @@ export class EditComponent implements OnInit {
       let id = Number(this.activatedRoute.snapshot.paramMap.get('id'))
       console.log("id is " + id)
       this.post = this.getPost(id);
-      console.log("posts are" + this.getPosts())
     } );
 
     console.log("this.post after paramMap is " + this.post);  
