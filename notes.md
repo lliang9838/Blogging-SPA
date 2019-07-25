@@ -38,3 +38,8 @@ the database, so for the edit component no data actually gets displayed on refre
 * on refresh not only does data gets lost, it becomes **null**
 ---
 * we can use two levels of **two-way** binding to bink data across **TWO** components
+---
+* Two bugs we need to solve before we do preview component
+  1. when URL changes, we need to make sure we save the post
+  2. when save and delete is processed, how to render the components properly as to reflect the 
+  latest changes

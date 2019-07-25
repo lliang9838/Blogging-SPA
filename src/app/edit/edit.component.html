@@ -1,4 +1,5 @@
-<div *ngIf="post">
+<!-- <router-outlet></router-outlet> I don't think i need this line. Something to do wiht ngoninit not being called get this.router navigate is called -->
+<div *ngIf="post" id="div2">
   <form>
     <div>Title: <input type="text" name="title" [(ngModel)]="post.title"></div>
     <div> Body: <textarea rows="4" cols="50" [(ngModel)]="post.body" name="body">

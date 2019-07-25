@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import {Post} from '../blog.service';
 import {BlogService} from '../blog.service'
-import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
+import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
 
 
 
@@ -24,24 +24,42 @@ export class ListComponent implements OnInit {
   //dependency injection
   constructor(private blogService: BlogService,
               private router: Router,
-              private activatedRouter: RouterModule,
-    ) { }
+              private changeDetector: ChangeDetectorRef,
+              private activatedRoute: ActivatedRoute
+    ) { 
+      
+    }
 
   ngOnInit() {
-    console.log("in ngoninit of list component")
-    console.log(document.cookie)
-    let username = parseJWT(document.cookie)["usr"]; //got username here
-    this.selectedUsername = username;
-    //console.log(username)
-    this.blogService.fetchPosts(username);
 
-    let my_posts = this.blogService.getPosts();
-    this.posts = my_posts;
-    console.log("In list component, property posts is " + this.posts)
+    // this.act_route.paramMap.subscribe(
+    //   () => {
+    //      console.log("URL in list is activated")
+
+         
+    //      //console.log("In list component, property posts is " + this.posts)
+    //   });
+
+    this.activatedRoute.paramMap.subscribe(() => 
+    {
+      console.log('in activated route of list component')
+      //console.log(document.cookie)
+      let username = parseJWT(document.cookie)["usr"]; //got username here
+      this.selectedUsername = username;
+      //console.log(username)
+      this.blogService.fetchPosts(username);
+
+      let my_posts = this.blogService.getPosts();
+      this.posts = my_posts;
+    });
+      
   }
 
   onSelect(post: Post): void{
     let route_url = "edit/" + post.postid;
+    // this.zone.run(() => {
+    //   this.router.navigate([route_url]);
+    // });
     this.router.navigate([route_url]);
   }
 

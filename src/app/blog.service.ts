@@ -44,7 +44,7 @@ export class BlogService {
   fetchPosts(username: string): void //returns an observable of Posts
   { 
     this.username = username;
-    console.log("this.posts outside of the get request is " + this.posts);
+    //console.log("this.posts outside of the get request is " + this.posts);
 
     let new_url = this.url + username;
     //GOTCHA: when the get request is called, the array goes from being empty to being undefined
@@ -64,15 +64,15 @@ export class BlogService {
               title: posts[i].title,
               body: posts[i].body };
 
-          console.log("posts is " + posts);
+         // console.log("posts is " + posts);
           
-          console.log("this.posts is " + this.posts);
+          //console.log("this.posts is " + this.posts);
           this.posts.push(p)
         }
 
         //FINSIHED: posts are listed in ascending order according to postid
         this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
-        console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
+       // console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
         localStorage.setItem(this.storage, JSON.stringify(this.posts)); //storing posts in localstorage
         //console.log(this.posts)
       })
@@ -81,14 +81,14 @@ export class BlogService {
   //no need to worry about this.posts not being populated, when application is loaded, should already be populated
   getPost(postid: number): Post
   {
-    console.log("in getPost in blog service")
+    //console.log("in getPost in blog service")
 
     if(this.posts.length === 0) //if posts is undefined, get it from localstorage
     {
       this.posts = JSON.parse(localStorage.getItem(this.storage));
     }
 
-    console.log("this.posts is " + this.posts);
+   // console.log("this.posts is " + this.posts);
 
     for(let i  = 0 ; i < this.posts.length; i++)
     {
@@ -124,32 +124,30 @@ export class BlogService {
       this.posts = JSON.parse(localStorage.getItem(this.storage));
     }
     
-    console.log(document.cookie)
+   // console.log(document.cookie)
     let username = parseJWT(document.cookie)["usr"]; //got username here
 
     //console.log(post)
     let new_url = this.url + username + '/'+ post.postid;
-    console.log(new_url)
+   // console.log(new_url)
     let body = {"title": post.title, "body":post.body, "modified": Date.now()}
     //adding response: text is crucial, without it, code wouldn't work
-    const req =  this.http.put(new_url, body, {observe: 'response'});
+    const req =  this.http.put(new_url, body, {responseType: 'text'});
     req.subscribe( 
       ret => {
 
         //after it gets updated in the database, let's call fetchPost to update localStorage's copy
-        this.fetchPosts(this.username);
-
-        if(ret.status !== 200)
+    
+        if(ret !== "OK") //doing ret!=="OK" instead of checking for the status removes this error "Http failure during parsing"
         {
           alert("Error updating the post at the server.")
           let route_url = "edit/" + post.postid;
 
           //TODO: (DONE) need to navigate to "edit view" of the post
         }
+        let route_url = "edit/" + post.postid;
+        this.router.navigate([route_url]);
       });
-    //navigate back to this view when we're finished updating
-    let route_url = "edit/" + post.postid;
-    this.router.navigate([route_url]);
   }
 
   //TODO: need to show that the post in the list pane is deleted without refreshing page
@@ -160,23 +158,23 @@ export class BlogService {
       this.posts = JSON.parse(localStorage.getItem(this.storage));
     }
 
-    console.log(document.cookie)
+   // console.log(document.cookie)
     let username = parseJWT(document.cookie)["usr"]; //got username here
 
-    console.log("postid is " + postid);
+   // console.log("postid is " + postid);
     for(let i  = 0 ; i < this.posts.length; i++)
     {
       if(postid === this.posts[i].postid) 
       {
         let new_url = this.url + username + '/' + this.posts[i].postid;
 
-        console.log(new_url)
+      //  console.log(new_url)
         // adding observe: response allows the response status to be read, without it. ret is undefined
         const req = this.http.delete(new_url, {observe: 'response'});
         req.subscribe(
           ret => {
 
-            console.log("ret in deletePost is " + ret);
+          //  console.log("ret in deletePost is " + ret);
             
 
             if(ret.status !== 204)
@@ -186,12 +184,11 @@ export class BlogService {
               //TODO: (DONE) need to navigate to /, the “list pane” of the editor
             }
             this.posts.slice(i,1); //deletes 1 element at index i
-            this.fetchPosts(this.username);
+            this.router.navigate(['/'])
           })
        
       }
     }
-    this.router.navigate(['/'])
   }
 
 }
