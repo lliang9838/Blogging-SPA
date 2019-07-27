@@ -88,14 +88,7 @@ export class BlogService {
   //no need to worry about this.posts not being populated, when application is loaded, should already be populated
   getPost(postid: number): Post
   {
-    //console.log("in getPost in blog service")
-
-    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    // {
-    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
-    // }
-
-   // console.log("this.posts is " + this.posts);
+    console.log("this.posts is " + this.posts)
 
     for(let i  = 0 ; i < this.posts.length; i++)
     {

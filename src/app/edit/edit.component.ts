@@ -43,7 +43,7 @@ export class EditComponent implements OnInit {
       // get to save the previous post, which is the desired post that we wanted to save in the first place
       console.log("id is " + id)
       this.post = this.getPost(id);
-      this.save(this.post); //makes sure any unsaved work gets saved when the URl navigates away
+      //this.save(this.post); //makes sure any unsaved work gets saved when the URl navigates away
     } );
 
    // console.log("this.post after paramMap is " + this.post);  
@@ -52,15 +52,15 @@ export class EditComponent implements OnInit {
 
 
   //whenever the browser is going to change states, any unsaved changes is saved automatically
-  @HostListener('window:beforeunload') 
-  unsaved_edits()
-  {
-    console.log("sup")
+  // @HostListener('window:beforeunload') 
+  // unsaved_edits()
+  // {
+  //   console.log("sup")
 
-    this.save(this.post);
+  //   this.save(this.post);
 
     
-  }
+  // }
 
   getPost(postid: number): Post
   {
