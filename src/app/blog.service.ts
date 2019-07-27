@@ -5,6 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
 
 
+
 export class Post {
   postid: number;
   created: Date;
@@ -22,7 +23,13 @@ export class BlogService {
 
   private storage: string = "posts";
 
-  constructor(private http: HttpClient,private router: Router) { }
+  constructor(private http: HttpClient,private router: Router) { 
+    this.username =  parseJWT(document.cookie)["usr"];
+    this.fetchPosts(this.username);
+
+  }
+
+  //TODO: need to update everything in localStorage
 
   
   // private handleError(operation = 'operation') {
@@ -41,7 +48,7 @@ export class BlogService {
   }
 
   //we're always guaranteeed that fetchPosts is called first whenever applicaiton is loaded. so we can then store data in browser and guarantee subsequent calls would already have data in browser
-  fetchPosts(username: string): void //returns an observable of Posts
+  fetchPosts(username: string)//returns an observable of Posts
   { 
     this.username = username;
     //console.log("this.posts outside of the get request is " + this.posts);
@@ -52,7 +59,7 @@ export class BlogService {
       posts => {
 
         //whenever fetchPosts is called, we should initialize the array back to empty, if not it would just keep on adding redundant data into our array
-        this.posts = []; 
+        //this.posts = []; 
         //console.log("posts[0].postid is " + posts[0].postid) //TOOD: looks like we need to look through all of posts and assign it to this.posts
         for(let i = 0; i < posts.length; i++)
         {
@@ -72,7 +79,7 @@ export class BlogService {
 
         //FINSIHED: posts are listed in ascending order according to postid
         this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
-       // console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
+        console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
         localStorage.setItem(this.storage, JSON.stringify(this.posts)); //storing posts in localstorage
         //console.log(this.posts)
       })
@@ -83,10 +90,10 @@ export class BlogService {
   {
     //console.log("in getPost in blog service")
 
-    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    {
-      this.posts = JSON.parse(localStorage.getItem(this.storage));
-    }
+    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    // {
+    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
+    // }
 
    // console.log("this.posts is " + this.posts);
 
@@ -102,11 +109,12 @@ export class BlogService {
 
   getPosts(): Post[]{
 
-    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    {
-      this.posts = JSON.parse(localStorage.getItem(this.storage));
-    }
+    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    // {
+    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
+    // }
 
+    console.log("hi")
     return this.posts;
   }
 
@@ -119,16 +127,15 @@ export class BlogService {
   //this is what makes it asychronous
   updatePost(post: Post): void{
 
-    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    {
-      this.posts = JSON.parse(localStorage.getItem(this.storage));
-    }
+    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    // {
+    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
+    // }
     
    // console.log(document.cookie)
-    let username = parseJWT(document.cookie)["usr"]; //got username here
 
-    //console.log(post)
-    let new_url = this.url + username + '/'+ post.postid;
+    console.log(post)
+    let new_url = this.url + this.username + '/'+ post.postid;
    // console.log(new_url)
     let body = {"title": post.title, "body":post.body, "modified": Date.now()}
     //adding response: text is crucial, without it, code wouldn't work
@@ -153,10 +160,10 @@ export class BlogService {
   //TODO: need to show that the post in the list pane is deleted without refreshing page
   deletePost(postid: number): void 
   {
-    if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    {
-      this.posts = JSON.parse(localStorage.getItem(this.storage));
-    }
+    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
+    // {
+    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
+    // }
 
    // console.log(document.cookie)
     let username = parseJWT(document.cookie)["usr"]; //got username here
@@ -175,7 +182,6 @@ export class BlogService {
           ret => {
 
           //  console.log("ret in deletePost is " + ret);
-            
 
             if(ret.status !== 204)
             {
@@ -183,10 +189,9 @@ export class BlogService {
               //TODO: convert this to an alert message
               //TODO: (DONE) need to navigate to /, the “list pane” of the editor
             }
-            this.posts.slice(i,1); //deletes 1 element at index i
+            this.posts.splice(i,1); //deletes 1 element at index i
             this.router.navigate(['/'])
           })
-       
       }
     }
   }

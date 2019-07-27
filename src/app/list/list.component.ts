@@ -47,10 +47,11 @@ export class ListComponent implements OnInit {
       let username = parseJWT(document.cookie)["usr"]; //got username here
       this.selectedUsername = username;
       //console.log(username)
-      this.blogService.fetchPosts(username);
+      //this.blogService.fetchPosts(username)
 
-      let my_posts = this.blogService.getPosts();
-      this.posts = my_posts;
+      
+      this.posts = this.blogService.getPosts();
+      console.log("this.posts is " + this.posts)
     });
       
   }
