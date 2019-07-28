@@ -2,6 +2,8 @@ import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import {Post} from '../blog.service';
 import {BlogService} from '../blog.service'
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 
@@ -18,6 +20,7 @@ export class ListComponent implements OnInit {
 
   selectedPost: Post;
   selectedUsername: string;
+  private url = 'http://localhost:3000/api/';
 
  
 
@@ -25,20 +28,13 @@ export class ListComponent implements OnInit {
   constructor(private blogService: BlogService,
               private router: Router,
               private changeDetector: ChangeDetectorRef,
-              private activatedRoute: ActivatedRoute
+              private activatedRoute: ActivatedRoute,
+              private http: HttpClient
     ) { 
       
     }
 
   ngOnInit() {
-
-    // this.act_route.paramMap.subscribe(
-    //   () => {
-    //      console.log("URL in list is activated")
-
-         
-    //      //console.log("In list component, property posts is " + this.posts)
-    //   });
 
     this.activatedRoute.paramMap.subscribe(() => 
     {
@@ -47,13 +43,49 @@ export class ListComponent implements OnInit {
       let username = parseJWT(document.cookie)["usr"]; //got username here
       this.selectedUsername = username;
       //console.log(username)
-      //this.blogService.fetchPosts(username)
 
+      let new_url = this.url + this.selectedUsername;
+      //GOTCHA: when the get request is called, the array goes from being empty to being undefined
+      this.getrequest(new_url).subscribe(
+        posts => {
+
+          //whenever fetchPosts is called, we should initialize the array back to empty, if not it would just keep on adding redundant data into our array
+          this.posts = []; 
+          //console.log("posts[0].postid is " + posts[0].postid) //TOOD: looks like we need to look through all of posts and assign it to this.posts
+          for(let i = 0; i < posts.length; i++)
+          {
+            //
+            let p: Post = 
+              { postid:posts[i].postid, 
+                created: posts[i].created, 
+                modified: posts[i].modified,
+                title: posts[i].title,
+                body: posts[i].body };
+
+          // console.log("posts is " + posts);
+            
+            //console.log("this.posts is " + this.posts);
+            this.posts.push(p)
+          }
+
+          //FINSIHED: posts are listed in ascending order according to postid
+          this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
+          console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
+          //localStorage.setItem(this.storage, JSON.stringify(this.posts)); //storing posts in localstorage
+          //console.log(this.posts)
+          //this.posts = this.blogService.getPosts();
+          console.log("this.posts is " + this.posts)
+          this.blogService.populatePosts(this.posts)
+        })
+        
       
-      this.posts = this.blogService.getPosts();
-      console.log("this.posts is " + this.posts)
-    });
+      });
       
+  }
+
+  getrequest(url): Observable<Post[]>
+  {
+    return this.http.get<Post[]>(url)
   }
 
   onSelect(post: Post): void{

@@ -43,3 +43,5 @@ the database, so for the edit component no data actually gets displayed on refre
   1. when URL changes, we need to make sure we save the post
   2. when save and delete is processed, how to render the components properly as to reflect the 
   latest changes
+--
+* how to make sure posts are loaded before we execute the ngOninit function in edit component

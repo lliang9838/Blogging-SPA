@@ -42,6 +42,9 @@ export class EditComponent implements OnInit {
       //GOTCHA: the problem here is that we get the postid of the post that was clicked and we didnt
       // get to save the previous post, which is the desired post that we wanted to save in the first place
       console.log("id is " + id)
+
+      //how can I make sure that this.fetchPost in list component is ran before I run this.getPost, 
+      //maybe do a data service flag that passes data
       this.post = this.getPost(id);
       //this.save(this.post); //makes sure any unsaved work gets saved when the URl navigates away
     } );

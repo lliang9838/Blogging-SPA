@@ -17,30 +17,17 @@ export class Post {
 @Injectable({providedIn: 'root'})
 export class BlogService {
 
-  private posts: Post[] = [];
+  public posts: Post[] = [];
   private url = 'http://localhost:3000/api/';
   private username: string = "";
 
   private storage: string = "posts";
 
   constructor(private http: HttpClient,private router: Router) { 
-    this.username =  parseJWT(document.cookie)["usr"];
-    this.fetchPosts(this.username);
+    //this.username =  parseJWT(document.cookie)["usr"];
+    //this.fetchPosts(this.username);
 
   }
-
-  //TODO: need to update everything in localStorage
-
-  
-  // private handleError(operation = 'operation') {
-  //   return (error: any) => {
-
-  //     alert("Error updating the post at the server");
-  //     //need to navigate back to edit view
-  //     //TODO: maybe something to do with routes?
-
-  //   };
-  // }
 
   getrequest(url): Observable<Post[]>
   {
@@ -80,9 +67,14 @@ export class BlogService {
         //FINSIHED: posts are listed in ascending order according to postid
         this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
         console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
-        localStorage.setItem(this.storage, JSON.stringify(this.posts)); //storing posts in localstorage
+       //storing posts in localstorage
         //console.log(this.posts)
       })
+  }
+
+  populatePosts(posts: Post[]): void{
+    this.posts = posts;
+    localStorage.setItem(this.storage, JSON.stringify(this.posts)); 
   }
 
   //no need to worry about this.posts not being populated, when application is loaded, should already be populated
