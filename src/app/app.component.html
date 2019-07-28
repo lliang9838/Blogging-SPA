@@ -1,2 +1,2 @@
-<app-list></app-list>
-<router-outlet></router-outlet> 
+<app-list (listLoaded)="displayRouter = true"></app-list>
+<router-outlet *ngIf="displayRouter"></router-outlet> 

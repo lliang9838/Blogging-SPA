@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import {Post} from '../blog.service';
 import {BlogService} from '../blog.service'
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
@@ -22,7 +22,7 @@ export class ListComponent implements OnInit {
   selectedUsername: string;
   private url = 'http://localhost:3000/api/';
 
- 
+  @Output() listLoaded: EventEmitter<boolean> = new EventEmitter();
 
   //dependency injection
   constructor(private blogService: BlogService,
@@ -76,11 +76,16 @@ export class ListComponent implements OnInit {
           //this.posts = this.blogService.getPosts();
           console.log("this.posts is " + this.posts)
           this.blogService.populatePosts(this.posts)
+          console.log('List Loaded');
+          this.listLoaded.next(true);
         })
         
       
       });
       
+  }
+  ngAfterViewInit(){
+    
   }
 
   getrequest(url): Observable<Post[]>

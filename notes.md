@@ -44,4 +44,5 @@ the database, so for the edit component no data actually gets displayed on refre
   2. when save and delete is processed, how to render the components properly as to reflect the 
   latest changes
 --
-* how to make sure posts are loaded before we execute the ngOninit function in edit component
+* how to make sure posts are loaded before we execute the ngOninit function in edit component (refreshing did some weird stuff)
+  * by using event emitters and modifying the selectors in app-component.html
