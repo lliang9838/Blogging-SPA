@@ -1,14 +1,10 @@
-#container {
-position: relative;
-width: 800px;
+a {
+    text-decoration: none;
+    color: inherit;
+
 }
-#div1, #div2 {
-position: absolute;
-width: 400px;
-}
-#div1 {
-left: 0;
-}
-#div2 {
-left: 300px;
+li{
+    cursor: pointer;
+    text-decoration: none;
+    list-style: none;
 }

@@ -1,13 +1,13 @@
-<!-- <router-outlet></router-outlet> I don't think i need this line. Something to do wiht ngoninit not being called get this.router navigate is called -->
-<div *ngIf="post" id="div2">
-  <form>
-    <div>Title: <input type="text" name="title" [(ngModel)]="post.title"></div>
-    <div> Body: <textarea rows="4" cols="50" [(ngModel)]="post.body" name="body">
-    </textarea> </div>
-    <p> Last Modified: {{ post.modified | date:'medium' }}  </p>
-    <input type="button" value="save" (click)="save(post)">
-    <input type="button" value="delete" (click)="delete(post.postid)">
-    <input type="button" value="preview" (click)="preview(post)">
-  </form>
-</div>
-  
+<form *ngIf="post" class="edit-form">
+  <div class="form-group">
+    <label class="text-white" for="title">Title</label>
+    <input type="text" class="form-control" id="title" [(ngModel)]="post.title" name="title">
+  </div>
+  <div class="form-group">
+    <label class="text-white" for="body">Body</label>
+    <textarea class="form-control" id="body" rows="4" cols="40" [(ngModel)]="post.body" name="body"></textarea>
+  </div>
+  <button type="button" class="btn btn-success mr-md-2" (click)="save(post)">Save</button>
+  <button type="button" class="btn btn-danger mr-md-2" (click)="delete(post.postid)">Delete</button>
+  <button type="button" class="btn btn-info mr-md-2" (click)="preview(post)">Preview</button>
+</form>

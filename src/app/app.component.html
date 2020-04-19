@@ -1,2 +1,16 @@
-<app-list (listLoaded)="displayRouter = true"></app-list>
-<router-outlet *ngIf="displayRouter"></router-outlet> 
+<h1 class="display-4 text-white text-center my-md-2">
+<span><img class="mx-md-2 mt-md-1" src="https://www.101computing.net/wp/wp-content/uploads/Keep-calm-and-carry-on-crown.png" width="130"></span>
+Keep Calm and Blog On 
+<span><img class="mx-md-2 mt-md-1" src="https://www.101computing.net/wp/wp-content/uploads/Keep-calm-and-carry-on-crown.png" width="130">
+</span></h1>
+
+<h2 class="m-md-3 mx-md-3 text-white font-weight-light">Your Posts</h2>
+
+<div class="row d-flex justify-content-start container">
+    <div class="card.col-12 .col-md-6 ml-5  list"> 
+        <app-list (listLoaded)="displayRouter = true"></app-list>
+    </div>
+    <div class=".col-12 .col-md-6 ml-5 router"> 
+        <router-outlet *ngIf="displayRouter"></router-outlet> 
+    </div>
+</div>
