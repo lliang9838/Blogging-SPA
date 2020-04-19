@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { HostListener } from '@angular/core';
 import {Post} from '../blog.service';
-import {BlogService} from '../blog.service'
+import {BlogService} from '../blog.service';
 import { RouterModule, Routes, ActivatedRoute, Router, NavigationEnd} from '@angular/router';
+import {FormGroup} from '@angular/forms';
 
 /*
 TODO: gray out save button when the content of the title and body is unchanged
@@ -18,6 +19,8 @@ export class EditComponent implements OnInit {
   //master detail thing similar to TOH
   @Input() post: Post;
   @Input() username: string;
+
+  profileForm: FormGroup;
 
   //need to store this bad boy in localStorage as well
 
