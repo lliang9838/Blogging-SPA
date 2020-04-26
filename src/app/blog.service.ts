@@ -12,6 +12,8 @@ export class Post {
   body: string;
 }
 
+// TODO: new post, delete post and update post should update its local posts array
+// FIXME: when creating new post, we navigate to /edit/:id but edit component does not show on right side
 @Injectable({ providedIn: "root" })
 export class BlogService {
   public posts: Post[] = [];
@@ -60,15 +62,38 @@ export class BlogService {
     return this.posts;
   }
 
+  newPost(): void {
+    const newPostId = this.posts[this.posts.length - 1].postid + 1;
+    let new_url = this.url + this.username + "/" + newPostId;
+    let body = {
+      title: "",
+      body: "",
+      created: Date.now(),
+      modified: Date.now(),
+      postid: newPostId,
+    };
+    const req = this.http.post(new_url, body, { responseType: "text" });
+
+    req.subscribe((ret) => {
+      if (ret !== "Created") {
+        this.router.navigate(["/"]);
+      }
+      this.fetchPosts(this.username);
+      let route_url = "edit/" + newPostId;
+      this.router.navigate([route_url]);
+    });
+  }
+
   updatePost(post: Post): void {
     let new_url = this.url + this.username + "/" + post.postid;
     let body = { title: post.title, body: post.body, modified: Date.now() };
     const req = this.http.put(new_url, body, { responseType: "text" });
     req.subscribe((ret) => {
       if (ret !== "OK") {
-        alert("Error updating the post at the server.");
+        alert("Error updating the post on the server.");
         let route_url = "edit/" + post.postid;
       }
+      this.fetchPosts(this.username);
       let route_url = "edit/" + post.postid;
       this.router.navigate([route_url]);
     });

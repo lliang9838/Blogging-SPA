@@ -40,7 +40,9 @@ export class ListComponent implements OnInit {
     this.router.navigate([route_url]);
   }
 
-  new(post: Post) {}
+  new() {
+    this.blogService.newPost();
+  }
 }
 
 function parseJWT(token) {
