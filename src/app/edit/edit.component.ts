@@ -39,7 +39,6 @@ export class EditComponent implements OnInit {
       title: new FormControl(),
       body: new FormControl(),
     });
-    console.log("this.profileForm in ngOnInit(): ", this.profileForm);
   }
 
   getPost(postid: number): Post {
@@ -51,14 +50,11 @@ export class EditComponent implements OnInit {
   }
 
   save(post: Post) {
-    console.log("save in edit component is being called");
     this.blogService.updatePost(post);
     this.profileForm.markAsPristine();
-    console.log(this.profileForm);
   }
 
   delete(postid: number) {
-    console.log("delete in edit component is being called");
     this.blogService.deletePost(postid);
   }
 

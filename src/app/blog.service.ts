@@ -30,11 +30,9 @@ export class BlogService {
   }
 
   fetchPosts(username: string) {
-    this.username = username;
-
-    let new_url = this.url + this.username;
+    let new_url = this.url + username;
     this.getrequest(new_url).subscribe((posts) => {
-      console.log("posts: ", posts);
+      this.posts.splice(0, this.posts.length);
       for (let i = 0; i < posts.length; i++) {
         let p: Post = {
           postid: posts[i].postid,
@@ -64,8 +62,6 @@ export class BlogService {
 
   updatePost(post: Post): void {
     let new_url = this.url + this.username + "/" + post.postid;
-    console.log("blogService::updatePost, this.username is ", this.username);
-    console.log("blogService::updatePost, new_url is ", new_url);
     let body = { title: post.title, body: post.body, modified: Date.now() };
     const req = this.http.put(new_url, body, { responseType: "text" });
     req.subscribe((ret) => {
@@ -90,7 +86,7 @@ export class BlogService {
           if (ret.status !== 204) {
             alert("Error deleting the post at the server.");
           }
-          this.posts.splice(i, 1); //deletes 1 element at index i
+          this.fetchPosts(this.username);
           this.router.navigate(["/"]);
         });
       }

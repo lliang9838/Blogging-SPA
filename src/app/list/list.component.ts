@@ -32,9 +32,7 @@ export class ListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(() => {
-      this.posts = this.blogService.getPosts();
-    });
+    this.posts = this.blogService.getPosts();
   }
 
   onSelect(post: Post): void {
