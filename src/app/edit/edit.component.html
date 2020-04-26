@@ -1,13 +1,41 @@
-<form *ngIf="post" class="edit-form" #heroForm="ngForm">
+<form *ngIf="post" class="edit-form" [formGroup]="profileForm">
   <div class="form-group">
     <label class="text-white" for="title">Title</label>
-    <input type="text" class="form-control" id="title" [(ngModel)]="post.title" name="title" #title="ngModel">
+    <input
+      type="text"
+      class="form-control"
+      id="title"
+      [(ngModel)]="post.title"
+      formControlName="title"
+    />
   </div>
   <div class="form-group">
     <label class="text-white" for="body">Body</label>
-    <textarea class="form-control" id="body" rows="4" cols="40" [(ngModel)]="post.body" name="body" #body="ngModel"></textarea>
+    <textarea
+      class="form-control"
+      id="body"
+      rows="4"
+      cols="40"
+      [(ngModel)]="post.body"
+      formControlName="body"
+    ></textarea>
   </div>
-  <button type="button" class="btn btn-success mr-md-2" [disabled]="title.pristine && body.pristine"  (click)="save(post)">Save</button>
-  <button type="button" class="btn btn-danger mr-md-2" (click)="delete(post.postid)">Delete</button>
-  <button type="button" class="btn btn-info mr-md-2"  (click)="preview(post)">Preview</button>
+  <button
+    type="button"
+    class="btn btn-success mr-md-2"
+    [disabled]="profileForm.pristine"
+    (click)="save(post)"
+  >
+    Save
+  </button>
+  <button
+    type="button"
+    class="btn btn-danger mr-md-2"
+    (click)="delete(post.postid)"
+  >
+    Delete
+  </button>
+  <button type="button" class="btn btn-info mr-md-2" (click)="preview(post)">
+    Preview
+  </button>
 </form>

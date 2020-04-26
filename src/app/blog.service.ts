@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
-
-
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, of } from "rxjs";
+import { catchError, map, tap } from "rxjs/operators";
+import { RouterModule, Routes, ActivatedRoute, Router } from "@angular/router";
 
 export class Post {
   postid: number;
@@ -14,178 +12,94 @@ export class Post {
   body: string;
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: "root" })
 export class BlogService {
-
   public posts: Post[] = [];
-  private url = 'http://localhost:3000/api/';
+  private url = "http://localhost:3000/api/";
   private username: string = "";
 
   private storage: string = "posts";
 
-  constructor(private http: HttpClient,private router: Router) { 
-    //this.username =  parseJWT(document.cookie)["usr"];
-    //this.fetchPosts(this.username);
-
+  constructor(private http: HttpClient, private router: Router) {
+    this.username = parseJWT(document.cookie)["usr"]; //got username here
+    this.fetchPosts(this.username);
   }
 
-  getrequest(url): Observable<Post[]>
-  {
-    return this.http.get<Post[]>(url)
+  getrequest(url): Observable<Post[]> {
+    return this.http.get<Post[]>(url);
   }
 
-  //we're always guaranteeed that fetchPosts is called first whenever applicaiton is loaded. so we can then store data in browser and guarantee subsequent calls would already have data in browser
-  fetchPosts(username: string)//returns an observable of Posts
-  { 
+  fetchPosts(username: string) {
     this.username = username;
-    //console.log("this.posts outside of the get request is " + this.posts);
 
-    let new_url = this.url + username;
-    //GOTCHA: when the get request is called, the array goes from being empty to being undefined
-    this.getrequest(new_url).subscribe(
-      posts => {
+    let new_url = this.url + this.username;
+    this.getrequest(new_url).subscribe((posts) => {
+      console.log("posts: ", posts);
+      for (let i = 0; i < posts.length; i++) {
+        let p: Post = {
+          postid: posts[i].postid,
+          created: posts[i].created,
+          modified: posts[i].modified,
+          title: posts[i].title,
+          body: posts[i].body,
+        };
 
-        //whenever fetchPosts is called, we should initialize the array back to empty, if not it would just keep on adding redundant data into our array
-        //this.posts = []; 
-        //console.log("posts[0].postid is " + posts[0].postid) //TOOD: looks like we need to look through all of posts and assign it to this.posts
-        for(let i = 0; i < posts.length; i++)
-        {
-          //
-          let p: Post = 
-            { postid:posts[i].postid, 
-              created: posts[i].created, 
-              modified: posts[i].modified,
-              title: posts[i].title,
-              body: posts[i].body };
-
-         // console.log("posts is " + posts);
-          
-          //console.log("this.posts is " + this.posts);
-          this.posts.push(p)
-        }
-
-        //FINSIHED: posts are listed in ascending order according to postid
-        this.posts.sort( (a,b)=> (a.postid > b.postid) ? 1 : -1);
-        console.log("this.posts in fetchPost before setting localStorage is " + this.posts);
-       //storing posts in localstorage
-        //console.log(this.posts)
-      })
+        this.posts.push(p);
+      }
+      this.posts.sort((a, b) => (a.postid > b.postid ? 1 : -1));
+    });
   }
 
-  populatePosts(posts: Post[]): void{
-    this.posts = posts;
-    localStorage.setItem(this.storage, JSON.stringify(this.posts)); 
-  }
-
-  //no need to worry about this.posts not being populated, when application is loaded, should already be populated
-  getPost(postid: number): Post
-  {
-    console.log("this.posts is " + this.posts)
-
-    for(let i  = 0 ; i < this.posts.length; i++)
-    {
-      if(postid === this.posts[i].postid) 
-      {
+  getPost(postid: number): Post {
+    for (let i = 0; i < this.posts.length; i++) {
+      if (postid === this.posts[i].postid) {
         return this.posts[i];
       }
     }
-    
   }
 
-  getPosts(): Post[]{
-
-    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    // {
-    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
-    // }
-
-    console.log("hi")
+  getPosts(): Post[] {
     return this.posts;
   }
 
-  // newPost(username: string): Post {
-  //   return 
-  // }
-
-  /* METHOD DOESN'T WORK */
-  //This is how you do http requests with observables, you call the http request, then you subscribe to it
-  //this is what makes it asychronous
-  updatePost(post: Post): void{
-
-    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    // {
-    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
-    // }
-    
-   // console.log(document.cookie)
-
-    console.log(post)
-    let new_url = this.url + this.username + '/'+ post.postid;
-   // console.log(new_url)
-    let body = {"title": post.title, "body":post.body, "modified": Date.now()}
-    //adding response: text is crucial, without it, code wouldn't work
-    const req =  this.http.put(new_url, body, {responseType: 'text'});
-    req.subscribe( 
-      ret => {
-
-        //after it gets updated in the database, let's call fetchPost to update localStorage's copy
-    
-        if(ret !== "OK") //doing ret!=="OK" instead of checking for the status removes this error "Http failure during parsing"
-        {
-          alert("Error updating the post at the server.")
-          let route_url = "edit/" + post.postid;
-
-          //TODO: (DONE) need to navigate to "edit view" of the post
-        }
+  updatePost(post: Post): void {
+    let new_url = this.url + this.username + "/" + post.postid;
+    console.log("blogService::updatePost, this.username is ", this.username);
+    console.log("blogService::updatePost, new_url is ", new_url);
+    let body = { title: post.title, body: post.body, modified: Date.now() };
+    const req = this.http.put(new_url, body, { responseType: "text" });
+    req.subscribe((ret) => {
+      if (ret !== "OK") {
+        alert("Error updating the post at the server.");
         let route_url = "edit/" + post.postid;
-        this.router.navigate([route_url]);
-      });
+      }
+      let route_url = "edit/" + post.postid;
+      this.router.navigate([route_url]);
+    });
   }
 
-  //TODO: need to show that the post in the list pane is deleted without refreshing page
-  deletePost(postid: number): void 
-  {
-    // if(this.posts.length === 0) //if posts is undefined, get it from localstorage
-    // {
-    //   this.posts = JSON.parse(localStorage.getItem(this.storage));
-    // }
-
-   // console.log(document.cookie)
+  deletePost(postid: number): void {
     let username = parseJWT(document.cookie)["usr"]; //got username here
 
-   // console.log("postid is " + postid);
-    for(let i  = 0 ; i < this.posts.length; i++)
-    {
-      if(postid === this.posts[i].postid) 
-      {
-        let new_url = this.url + username + '/' + this.posts[i].postid;
+    for (let i = 0; i < this.posts.length; i++) {
+      if (postid === this.posts[i].postid) {
+        let new_url = this.url + username + "/" + this.posts[i].postid;
 
-      //  console.log(new_url)
-        // adding observe: response allows the response status to be read, without it. ret is undefined
-        const req = this.http.delete(new_url, {observe: 'response'});
-        req.subscribe(
-          ret => {
-
-          //  console.log("ret in deletePost is " + ret);
-
-            if(ret.status !== 204)
-            {
-              alert("Error deleting the post at the server.")
-              //TODO: convert this to an alert message
-              //TODO: (DONE) need to navigate to /, the “list pane” of the editor
-            }
-            this.posts.splice(i,1); //deletes 1 element at index i
-            this.router.navigate(['/'])
-          })
+        const req = this.http.delete(new_url, { observe: "response" });
+        req.subscribe((ret) => {
+          if (ret.status !== 204) {
+            alert("Error deleting the post at the server.");
+          }
+          this.posts.splice(i, 1); //deletes 1 element at index i
+          this.router.navigate(["/"]);
+        });
       }
     }
   }
-
 }
 
-function parseJWT(token)
-{
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(atob(base64));
+function parseJWT(token) {
+  let base64Url = token.split(".")[1];
+  let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  return JSON.parse(atob(base64));
 }

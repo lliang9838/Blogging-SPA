@@ -1,15 +1,20 @@
-<div class="card"> 
-    <ul class="list-group list-group-flush">
-      <li *ngFor="let post of posts">
-        <a class="d-flex justify-content-between list-group-item list-group-item-action" routerLink="/edit/{{post.postid}}">
-            <div class="p-2 bg-info text-white rounded">
-              {{ post.created | date:'medium' }} 
-            </div>
-            <div class="p-2 ml-md-3 list-item-title">
-              {{post.title}}
-            </div>
-        </a>
-      </li>
-    </ul>
-  </div>
-  <button type="button" class="btn btn-primary mt-md-3" (click)="new(post)">New Post</button>
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let post of posts">
+      <a
+        class="d-flex justify-content-between list-group-item list-group-item-action"
+        routerLink="/edit/{{ post.postid }}"
+      >
+        <div class="p-2 bg-info text-white rounded">
+          {{ post.created | date: "medium" }}
+        </div>
+        <div class="p-2 ml-md-3 list-item-title">
+          {{ post.title }}
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>
+<button type="button" class="btn btn-primary mt-md-3" (click)="new(post)">
+  New Post
+</button>
