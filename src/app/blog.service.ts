@@ -12,8 +12,6 @@ export class Post {
   body: string;
 }
 
-// TODO: new post, delete post and update post should update its local posts array
-// FIXME: when creating new post, we navigate to /edit/:id but edit component does not show on right side
 @Injectable({ providedIn: "root" })
 export class BlogService {
   public posts: Post[] = [];
@@ -74,11 +72,20 @@ export class BlogService {
     };
     const req = this.http.post(new_url, body, { responseType: "text" });
 
+    let p: Post = {
+      postid: newPostId,
+      title: "",
+      body: "",
+      created: new Date(Date.now()),
+      modified: new Date(Date.now()),
+    };
+
+    this.posts.push(p);
+
     req.subscribe((ret) => {
       if (ret !== "Created") {
         this.router.navigate(["/"]);
       }
-      this.fetchPosts(this.username);
       let route_url = "edit/" + newPostId;
       this.router.navigate([route_url]);
     });
@@ -93,7 +100,16 @@ export class BlogService {
         alert("Error updating the post on the server.");
         let route_url = "edit/" + post.postid;
       }
-      this.fetchPosts(this.username);
+
+      // updating our post in our "posts" array
+      for (let i = 0; i < this.posts.length; i++) {
+        if (post.postid === this.posts[i].postid) {
+          this.posts[i].title = post.title;
+          this.posts[i].body = post.body;
+          this.posts[i].modified = post.modified;
+        }
+      }
+
       let route_url = "edit/" + post.postid;
       this.router.navigate([route_url]);
     });
@@ -111,7 +127,13 @@ export class BlogService {
           if (ret.status !== 204) {
             alert("Error deleting the post at the server.");
           }
-          this.fetchPosts(this.username);
+
+          for (let i = 0; i < this.posts.length; i++) {
+            if (postid === this.posts[i].postid) {
+              this.posts.splice(i, 1);
+            }
+          }
+
           this.router.navigate(["/"]);
         });
       }
