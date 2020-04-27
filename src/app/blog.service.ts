@@ -25,13 +25,13 @@ export class BlogService {
     this.fetchPosts(this.username);
   }
 
-  getrequest(url): Observable<Post[]> {
+  getRequest(url): Observable<Post[]> {
     return this.http.get<Post[]>(url);
   }
 
   fetchPosts(username: string) {
     let new_url = this.url + username;
-    this.getrequest(new_url).subscribe((posts) => {
+    this.getRequest(new_url).subscribe((posts) => {
       this.posts.splice(0, this.posts.length);
       for (let i = 0; i < posts.length; i++) {
         let p: Post = {
@@ -89,6 +89,16 @@ export class BlogService {
       let route_url = "edit/" + newPostId;
       this.router.navigate([route_url]);
     });
+  }
+
+  saveChanges(post: Post): Observable<any> {
+    let new_url = this.url + this.username + "/" + post.postid;
+    let body = {
+      title: post.title ? post.title : "",
+      body: post.body ? post.body : "",
+      modified: Date.now(),
+    };
+    return this.http.put(new_url, body, { responseType: "text" });
   }
 
   updatePost(post: Post): void {

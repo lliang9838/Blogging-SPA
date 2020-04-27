@@ -17,7 +17,6 @@ import { FormGroup, FormControl } from "@angular/forms";
   styleUrls: ["./edit.component.css"],
 })
 export class EditComponent implements OnInit {
-  //master detail thing similar to TOH
   @Input() post: Post;
   @Input() username: string;
 
@@ -47,6 +46,16 @@ export class EditComponent implements OnInit {
 
   getPosts(): Post[] {
     return this.blogService.getPosts();
+  }
+
+  @HostListener("window:beforeunload", ["$event"])
+  onWindowClose($event) {
+    if (this.profileForm.dirty)
+      this.blogService.saveChanges(this.post).subscribe((ret) => {
+        if (ret !== "OK") {
+          alert("Error updating the post on the server.");
+        }
+      });
   }
 
   save(post: Post) {
