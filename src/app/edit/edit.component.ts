@@ -2,13 +2,7 @@ import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
 import { HostListener } from "@angular/core";
 import { Post } from "../blog.service";
 import { BlogService } from "../blog.service";
-import {
-  RouterModule,
-  Routes,
-  ActivatedRoute,
-  Router,
-  NavigationEnd,
-} from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FormGroup, FormControl } from "@angular/forms";
 
 @Component({
@@ -17,16 +11,15 @@ import { FormGroup, FormControl } from "@angular/forms";
   styleUrls: ["./edit.component.css"],
 })
 export class EditComponent implements OnInit {
-  @Input() post: Post;
-  @Input() username: string;
+  post: Post;
+  username: string;
 
   profileForm: FormGroup;
 
   constructor(
     private blogService: BlogService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private changeDetector: ChangeDetectorRef
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -42,10 +35,6 @@ export class EditComponent implements OnInit {
 
   getPost(postid: number): Post {
     return this.blogService.getPost(postid);
-  }
-
-  getPosts(): Post[] {
-    return this.blogService.getPosts();
   }
 
   @HostListener("window:beforeunload", ["$event"])
@@ -68,6 +57,14 @@ export class EditComponent implements OnInit {
   }
 
   preview(post: Post) {
-    console.log("preview");
+    if (this.profileForm.dirty) {
+      this.blogService.saveChanges(post).subscribe((ret) => {
+        if (ret !== "OK") {
+          alert("Error updating the post on the server.");
+        }
+      });
+    }
+    let route_url = "preview/" + post.postid;
+    this.router.navigate([route_url]);
   }
 }

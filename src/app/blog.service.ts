@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { catchError, map, tap } from "rxjs/operators";
-import { RouterModule, Routes, ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 
 export class Post {
   postid: number;
@@ -17,8 +16,6 @@ export class BlogService {
   public posts: Post[] = [];
   private url = "http://localhost:3000/api/";
   private username: string = "";
-
-  private storage: string = "posts";
 
   constructor(private http: HttpClient, private router: Router) {
     this.username = parseJWT(document.cookie)["usr"]; //got username here

@@ -1,0 +1,7 @@
+<div *ngIf="post">
+  <button type="button" class="btn btn-info mb-3" (click)="edit(post)">
+    Edit
+  </button>
+  <div class="text-light" [innerHTML]="titleMarkdown"></div>
+  <div class="text-light" [innerHTML]="bodyMarkdown"></div>
+</div>

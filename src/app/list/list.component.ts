@@ -1,15 +1,7 @@
-import {
-  Component,
-  OnInit,
-  NgZone,
-  ChangeDetectorRef,
-  Output,
-  EventEmitter,
-} from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { Post } from "../blog.service";
 import { BlogService } from "../blog.service";
-import { RouterModule, Routes, Router, ActivatedRoute } from "@angular/router";
-import { Observable, of } from "rxjs";
+import { Router, ActivatedRoute } from "@angular/router";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Component({
@@ -21,7 +13,6 @@ export class ListComponent implements OnInit {
   posts: Post[];
 
   selectedPost: Post;
-  private url = "http://localhost:3000/api/";
 
   constructor(
     private blogService: BlogService,
@@ -43,10 +34,4 @@ export class ListComponent implements OnInit {
   new() {
     this.blogService.newPost();
   }
-}
-
-function parseJWT(token) {
-  let base64Url = token.split(".")[1];
-  let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  return JSON.parse(atob(base64));
 }
