@@ -42,13 +42,26 @@ export class BlogService {
         this.posts.push(p);
       }
       this.posts.sort((a, b) => (a.postid > b.postid ? 1 : -1));
+      if (localStorage.getItem("posts")) localStorage.removeItem("posts");
+      localStorage.setItem("posts", JSON.stringify(this.posts));
     });
   }
 
   getPost(postid: number): Post {
-    for (let i = 0; i < this.posts.length; i++) {
-      if (postid === this.posts[i].postid) {
-        return this.posts[i];
+    // we know this case is for reloads
+    if (this.posts.length === 0) {
+      let retPosts = JSON.parse(localStorage.getItem("posts"));
+      for (let i = 0; i < retPosts.length; i++) {
+        if (postid === retPosts[i].postid) {
+          return retPosts[i];
+        }
+      }
+    } else {
+      // for non reload case
+      for (let i = 0; i < this.posts.length; i++) {
+        if (postid === this.posts[i].postid) {
+          return this.posts[i];
+        }
       }
     }
   }
