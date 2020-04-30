@@ -7,7 +7,8 @@ import { AppComponent } from './app.component';
 import { ListComponent } from './list/list.component';
 import { EditComponent } from './edit/edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';import { AppRoutingModule } from './app-routing.module';
-import { PreviewComponent } from './preview/preview.component'; // <-- NgModel lives here
+import { PreviewComponent } from './preview/preview.component';
+import { LoginComponent } from './login/login.component'; // <-- NgModel lives here
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { PreviewComponent } from './preview/preview.component'; // <-- NgModel l
     ListComponent,
     EditComponent,
     PreviewComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
