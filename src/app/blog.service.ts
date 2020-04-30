@@ -92,6 +92,9 @@ export class BlogService {
 
     this.posts.push(p);
 
+    if (localStorage.getItem("posts")) localStorage.removeItem("posts");
+    localStorage.setItem("posts", JSON.stringify(this.posts));
+
     req.subscribe((ret) => {
       if (ret !== "Created") {
         this.router.navigate(["/"]);
@@ -108,6 +111,10 @@ export class BlogService {
       body: post.body ? post.body : "",
       modified: Date.now(),
     };
+
+    if (localStorage.getItem("posts")) localStorage.removeItem("posts");
+    localStorage.setItem("posts", JSON.stringify(this.posts));
+
     return this.http.put(new_url, body, { responseType: "text" });
   }
 
@@ -129,6 +136,9 @@ export class BlogService {
           this.posts[i].modified = post.modified;
         }
       }
+
+      if (localStorage.getItem("posts")) localStorage.removeItem("posts");
+      localStorage.setItem("posts", JSON.stringify(this.posts));
 
       let route_url = "edit/" + post.postid;
       this.router.navigate([route_url]);
@@ -153,6 +163,9 @@ export class BlogService {
               this.posts.splice(i, 1);
             }
           }
+
+          if (localStorage.getItem("posts")) localStorage.removeItem("posts");
+          localStorage.setItem("posts", JSON.stringify(this.posts));
 
           this.router.navigate(["/"]);
         });
