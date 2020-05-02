@@ -35,14 +35,16 @@ export class LoginService {
 
   logout(): void {
     let logoutUrl = this.url + "logout/";
-    const logoutReq = this.http.post(logoutUrl, {
+
+    let body = {};
+    const logoutReq = this.http.post(logoutUrl, body, {
       observe: "response",
-      //responseType: "text",
+      responseType: "text",
     });
 
     logoutReq.subscribe((ret) => {
       console.log(ret);
-      if (ret.msg === "Logged out") {
+      if (ret.status === 200) {
         this.currUser = null;
         location.reload();
       }
