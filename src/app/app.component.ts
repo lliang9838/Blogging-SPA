@@ -8,4 +8,8 @@ import { LoginService } from "./login.service";
 })
 export class AppComponent {
   constructor(private loginService: LoginService) {}
+
+  logout() {
+    this.loginService.logout();
+  }
 }

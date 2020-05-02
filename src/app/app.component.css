@@ -1,9 +1,13 @@
- .list{
-    /* border: solid red; */
-    padding: 5px;
+.list {
+  /* border: solid red; */
+  padding: 5px;
 }
 
-.router{
-    /* border: solid blue; */
-    padding: 5px;
-} 
+.router {
+  /* border: solid blue; */
+  padding: 5px;
+}
+
+.log-out {
+  left: auto;
+}
