@@ -43,8 +43,6 @@ export class LoginService {
     logoutReq.subscribe((ret) => {
       console.log(ret);
       if (ret.msg === "Logged out") {
-        console.log("logout successful");
-        // logout successful
         this.currUser = null;
       }
     });
