@@ -44,6 +44,7 @@ export class LoginService {
       console.log(ret);
       if (ret.msg === "Logged out") {
         this.currUser = null;
+        location.reload();
       }
     });
   }
