@@ -23,7 +23,7 @@ export class BlogService {
   }
 
   getRequest(url): Observable<Post[]> {
-    return this.http.get<Post[]>(url);
+    return this.http.get<Post[]>(url, { withCredentials: true });
   }
 
   fetchPosts(username: string) {
@@ -80,7 +80,10 @@ export class BlogService {
       modified: Date.now(),
       postid: newPostId,
     };
-    const req = this.http.post(new_url, body, { responseType: "text" });
+    const req = this.http.post(new_url, body, {
+      withCredentials: true,
+      responseType: "text",
+    });
 
     let p: Post = {
       postid: newPostId,
@@ -115,13 +118,19 @@ export class BlogService {
     if (localStorage.getItem("posts")) localStorage.removeItem("posts");
     localStorage.setItem("posts", JSON.stringify(this.posts));
 
-    return this.http.put(new_url, body, { responseType: "text" });
+    return this.http.put(new_url, body, {
+      withCredentials: true,
+      responseType: "text",
+    });
   }
 
   updatePost(post: Post): void {
     let new_url = this.url + this.username + "/" + post.postid;
     let body = { title: post.title, body: post.body, modified: Date.now() };
-    const req = this.http.put(new_url, body, { responseType: "text" });
+    const req = this.http.put(new_url, body, {
+      withCredentials: true,
+      responseType: "text",
+    });
     req.subscribe((ret) => {
       if (ret !== "OK") {
         alert("Error updating the post on the server.");
@@ -152,7 +161,10 @@ export class BlogService {
       if (postid === this.posts[i].postid) {
         let new_url = this.url + username + "/" + this.posts[i].postid;
 
-        const req = this.http.delete(new_url, { observe: "response" });
+        const req = this.http.delete(new_url, {
+          withCredentials: true,
+          observe: "response",
+        });
         req.subscribe((ret) => {
           if (ret.status !== 204) {
             alert("Error deleting the post at the server.");

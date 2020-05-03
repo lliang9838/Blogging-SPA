@@ -41,6 +41,7 @@ export class LoginService {
     const logoutReq = this.http.post(logoutUrl, body, {
       observe: "response",
       responseType: "text",
+      withCredentials: true,
     });
 
     logoutReq.subscribe((ret) => {
