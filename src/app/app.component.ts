@@ -7,7 +7,7 @@ import { LoginService } from "./login.service";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  constructor(private loginService: LoginService) {}
+  constructor(public loginService: LoginService) {}
 
   logout() {
     this.loginService.logout();
