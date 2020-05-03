@@ -14,7 +14,7 @@ export class Post {
 @Injectable({ providedIn: "root" })
 export class BlogService {
   public posts: Post[] = [];
-  private url = "http://localhost:3000/api/";
+  private url = "http://localhost:8080/api/";
   private username: string = "";
 
   constructor(private http: HttpClient, private router: Router) {
@@ -71,7 +71,10 @@ export class BlogService {
   }
 
   newPost(): void {
-    const newPostId = this.posts[this.posts.length - 1].postid + 1;
+    const newPostId =
+      this.posts.length !== 0
+        ? this.posts[this.posts.length - 1].postid + 1
+        : 1;
     let new_url = this.url + this.username + "/" + newPostId;
     let body = {
       title: "",

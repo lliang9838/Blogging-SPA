@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
 export class LoginService {
   currUser: string = null;
 
-  private url = "http://localhost:3000/";
+  private url = "http://localhost:8080/";
 
   constructor(private http: HttpClient) {
     if (document.cookie) this.currUser = parseJWT(document.cookie)["usr"]; //got username here
