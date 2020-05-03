@@ -24,6 +24,7 @@ export class LoginService {
     const loginReq = this.http.post(loginUrl, body, {
       observe: "response",
       responseType: "text",
+      withCredentials: true,
     });
 
     loginReq.subscribe((ret) => {
