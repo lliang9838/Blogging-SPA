@@ -30,8 +30,15 @@ export class LoginService {
 
     loginReq.subscribe((ret) => {
       if (ret.status === 200) {
-        this.currUser = username;
-        this.router.navigate(["/"]);
+        if (this.router.url !== "/") {
+          console.log("here");
+          this.router.navigate(["/"]).then(() => {
+            this.currUser = username;
+          });
+        } else {
+          console.log("there");
+          this.currUser = username;
+        }
       }
     });
   }
